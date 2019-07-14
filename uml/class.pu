@@ -1,0 +1,42 @@
+@startuml
+namespace Clients {
+  interface IClient
+  IClient ..|> Login.ILoggable
+
+  namespace Implements {
+    class Client
+    Client ..|> Clients.IClient
+    Client --|> Singleton.Singleton
+  }
+}
+
+namespace Login {
+  interface ILoginable {
+    + login(credential: LoginCredential): boolean
+  }
+  ILoginable -> Login.LoginCredential
+
+  interface ILogoutable {
+    + logout(): void
+  }
+
+  interface ILoggable
+  ILoggable ..|> Login.ILoginable
+  ILoggable ..|> Login.ILogoutable
+
+  class LoginCredential {
+    + username: string
+    + password: string
+  }
+}
+
+namespace Singleton {
+  class Singleton<TClass> {
+    - {static} _instance: TClass
+
+    - constructor()
+
+    + {static} get instance(): TClass
+  }
+}
+@enduml
